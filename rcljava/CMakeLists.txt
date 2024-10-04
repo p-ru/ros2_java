@@ -117,6 +117,14 @@ foreach(_jni_source ${${PROJECT_NAME}_jni_sources})
     PUBLIC
     ${JNI_INCLUDE_DIRS}
   )
+  
+  if(ANDROID)
+    # On Android, link against the android logging library
+    find_library(log-lib log)
+    target_link_libraries(${_target_name} ${log-lib})
+  else()
+    message(FATAL_ERROR "Not compiling for Android!")
+  endif()
 
   ament_export_jni_libraries(${_target_name})
 

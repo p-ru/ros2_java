@@ -18,6 +18,8 @@
 #include <cstdio>
 #include <cstdlib>
 #include <string>
+#include <chrono>
+#include <iostream>
 
 #include "rcl/error_handling.h"
 #include "rcl/event.h"
@@ -27,6 +29,24 @@
 
 #include "rcljava_common/exceptions.hpp"
 #include "rcljava_common/signatures.hpp"
+
+#ifdef __ANDROID__
+
+#include <android/log.h>
+
+#define TAG "PublisherImpl"
+
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR,    TAG, __VA_ARGS__)
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN,     TAG, __VA_ARGS__)
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO,     TAG, __VA_ARGS__)
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,    TAG, __VA_ARGS__)
+
+#else
+
+#error "Not compiling for Android!"
+// TODO: implement logging for non-Android platforms
+
+#endif
 
 #include "org_ros2_rcljava_publisher_PublisherImpl.h"
 
@@ -49,9 +69,25 @@ Java_org_ros2_rcljava_publisher_PublisherImpl_nativePublish(
   convert_from_java_signature convert_from_java =
     reinterpret_cast<convert_from_java_signature>(jfrom_java_converter);
 
+  auto start = std::chrono::high_resolution_clock::now();
   void * raw_ros_message = convert_from_java(jmsg, nullptr);
+  auto end = std::chrono::high_resolution_clock::now();
 
+  std::chrono::duration<double> diff = end - start;
+  // Warn on long (>10ms) convert_from_java time
+  if (diff.count() * 1000.0 > 10.0) {
+    LOGW("convert_from_java() time = %f ms", diff.count() * 1000.0);
+  }
+  
+  start = std::chrono::high_resolution_clock::now();
   rcl_ret_t ret = rcl_publish(publisher, raw_ros_message, nullptr);
+  end = std::chrono::high_resolution_clock::now();
+  diff = end - start;
+
+  // Warn on long (>50ms) publish time
+  if (diff.count() * 1000.0 > 50.0) {
+    LOGW("Long rcl_publish() time = %f ms", diff.count() * 1000.0);
+  }
 
   destroy_ros_message_signature destroy_ros_message =
     reinterpret_cast<destroy_ros_message_signature>(jmsg_destructor_handle);

@@ -401,13 +401,19 @@ normalized_type = get_normalized_type(member.type)
 @[    if isinstance(member.type.value_type, BasicType)]@
   // BasicType
   auto _jfield_@(member.name)_fid = env->GetFieldID(_j@(msg_normalized_type)_class_global, "@(member.name)", "[@(get_jni_primitive_signature(member.type.value_type))");
-  @[    if isinstance(member.type, Array)]@
+@[    if isinstance(member.type, Array)]@
   auto _jfield_@(member.name)_array_size = @(member.type.size);
 @[      else]@
   auto _jfield_@(member.name)_array_size = _ros_message->@(member.name).size;
 @[      end if]@
   auto _jarray_@(member.name)_array = env->@(get_jni_array_func(member.type.value_type, 0))(_jfield_@(member.name)_array_size);
   jobject _jarray_list_@(member.name)_obj = reinterpret_cast<jobject>(_jarray_@(member.name)_array);
+@[      if isinstance(member.type, Array)]@
+  auto _ros_@(member.name)_element = _ros_message->@(member.name);
+@[      else]@
+  auto _ros_@(member.name)_element = _ros_message->@(member.name).data;
+@[      end if]@
+  env->@(get_jni_array_func(member.type.value_type, 4))(_jarray_@(member.name)_array, 0, _jfield_@(member.name)_array_size, reinterpret_cast<j@(get_java_type(member.type.value_type, use_primitives=True))*>(_ros_@(member.name)_element));
 @[    elif isinstance(member.type.value_type, AbstractGenericString)]@
   // AbstractGenericString
   auto _jfield_@(member.name)_fid = env->GetFieldID(_j@(msg_normalized_type)_class_global, "@(member.name)", "L@(list_jni_type);");
@@ -487,7 +493,7 @@ normalized_type = get_normalized_type(member.type)
 jni_signature = get_jni_signature(member.type)
 set_method_name = 'Set%sField' % get_java_type(member.type, use_primitives=True).capitalize()
 }@
-  auto _jfield_@(member.name)_fid = env->GetFieldID(_j@(msg_normalized_type)_class_global, "@(member.name)", "[@(jni_signature)");
+  auto _jfield_@(member.name)_fid = env->GetFieldID(_j@(msg_normalized_type)_class_global, "@(member.name)", "@(jni_signature)");
   env->@(set_method_name)(_jmessage_obj, _jfield_@(member.name)_fid, _ros_message->@(member.name));
 @[    else]@
   auto _jfield_@(member.name)_fid = env->GetFieldID(
