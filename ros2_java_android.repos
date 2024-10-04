@@ -174,11 +174,11 @@ repositories:
   ros2/rcutils:
     type: git
     url: https://github.com/skalldri/rcutils.git
-    version: iron
+    version: jazzy
   ros2-java/ament_java:
     type: git
     url: https://github.com/skalldri/ament_java.git
-    version: iron
+    version: jazzy
   ros2-java/ros2_java:
     type: git
     url: https://github.com/skalldri/ros2_java.git
@@ -186,4 +186,4 @@ repositories:
   ros2-java/ros2_android:
     type: git
     url: https://github.com/skalldri/ros2_android.git
-    version: iron
+    version: jazzy
