@@ -177,17 +177,13 @@ repositories:
     version: iron
   ros2-java/ament_java:
     type: git
-    url: https://github.com/ros2-java/ament_java.git
-    version: main
+    url: https://github.com/skalldri/ament_java.git
+    version: iron
   ros2-java/ros2_java:
     type: git
     url: https://github.com/skalldri/ros2_java.git
-    version: main
+    version: iron-java-primitive-arrays
   ros2-java/ros2_android:
     type: git
     url: https://github.com/skalldri/ros2_android.git
-    version: main
-  ros2-java/ros2_android_examples:
-    type: git
-    url: https://github.com/ros2-java/ros2_android_examples.git
-    version: main
+    version: iron
