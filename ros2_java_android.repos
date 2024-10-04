@@ -167,6 +167,10 @@ repositories:
     type: git
     url: https://github.com/ros2/geometry2.git
     version: jazzy
+  ros2/pybind11_vendor:
+    type: git
+    url: https://github.com/ros2/pybind11_vendor.git
+    version: jazzy
   eProsima/Fast-DDS:
     type: git
     url: https://github.com/skalldri/Fast-DDS.git
