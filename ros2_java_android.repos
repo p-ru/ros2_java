@@ -191,3 +191,7 @@ repositories:
     type: git
     url: https://github.com/skalldri/ros2_android.git
     version: jazzy
+  ros2-java/ament_gradle_plugin:
+    type: git
+    url: https://github.com/skalldri/ament_gradle_plugin.git
+    version: master
