@@ -452,6 +452,8 @@ normalized_type = get_normalized_type(member.type)
 @[      end if]@
     if (_jlist_@(member.name)_element != nullptr) {
       jboolean _jlist_@(member.name)_add_result = env->CallBooleanMethod(_jarray_list_@(member.name)_obj, _jlist_@(member.name)_add_mid, _jlist_@(member.name)_element);
+      // Silence unreferenced parameter warning if assert() compiled out
+      (void)_jlist_@(member.name)_add_result;
       assert(_jlist_@(member.name)_add_result);
     }
   }
@@ -472,6 +474,8 @@ normalized_type = get_normalized_type(member.type)
     if (_jlist_@(member.name)_element != nullptr) {
       jboolean _jlist_@(member.name)_add_result = env->CallBooleanMethod(_jarray_list_@(member.name)_obj, _jlist_@(member.name)_add_mid, _jlist_@(member.name)_element);
       assert(_jlist_@(member.name)_add_result);
+      // Silence unreferenced parameter warning if assert() compiled out
+      (void)_jlist_@(member.name)_add_result;
     }
   }
 @[    end if]@
@@ -576,6 +580,9 @@ JNIEXPORT void JNICALL JNI_OnUnload(JavaVM * vm, void *)
 {
   assert(g_vm != nullptr);
   assert(g_vm == vm);
+
+  // Silence unused parameter warning if assert() is compiled out
+  (void)vm;
 
   JNIEnv * env;
   if (g_vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) == JNI_OK) {
