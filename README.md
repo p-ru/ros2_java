@@ -4,7 +4,7 @@
 
 | Target                                    | Status        |
 |-------------------------------------------|---------------|
-| **ROS Galactic - Ubuntu Focal (OpenJDK)** | ![Build Status](https://github.com/ros2-java/ros2_java/workflows/CI/badge.svg?branch=main) |
+| **ROS Jazzy - Ubuntu Focal (OpenJDK)** | ![CI](https://github.com/skalldri/ros2_java/actions/workflows/build_and_test.yml/badge.svg?branch=jazzy) |
 
 ## Introduction
 
