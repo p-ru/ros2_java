@@ -11,6 +11,10 @@ list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules")
 
 include(CrossCompilingExtra)
 
+# Find the special "termium_java" package, which will
+# download a specific version of Java and override JAVA_HOME to let us find it
+find_package(termium_java REQUIRED)
+
 if(CMAKE_CROSSCOMPILING)
   find_host_package(Java COMPONENTS Development REQUIRED)
 else()
@@ -19,6 +23,7 @@ endif()
 if(NOT ANDROID)
   find_package(JNI REQUIRED)
 endif()
+
 include(UseJava)
 
 # Default to C++14

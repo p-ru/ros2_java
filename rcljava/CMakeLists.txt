@@ -13,8 +13,13 @@ find_package(rcljava_common REQUIRED)
 find_package(rmw REQUIRED)
 find_package(rmw_implementation_cmake REQUIRED)
 find_package(rosidl_cmake REQUIRED)
+find_package(rosidl_generator_java REQUIRED)
 
 include(CrossCompilingExtra)
+
+# Find the special "termium_java" package, which will
+# download a specific version of Java and override JAVA_HOME to let us find it
+find_package(termium_java REQUIRED)
 
 if(CMAKE_CROSSCOMPILING)
   find_host_package(Java COMPONENTS Development REQUIRED)
@@ -117,13 +122,13 @@ foreach(_jni_source ${${PROJECT_NAME}_jni_sources})
     PUBLIC
     ${JNI_INCLUDE_DIRS}
   )
-  
+
   if(ANDROID)
     # On Android, link against the android logging library
     find_library(log-lib log)
     target_link_libraries(${_target_name} ${log-lib})
   else()
-    message(FATAL_ERROR "Not compiling for Android!")
+    message(WARNING "Not compiling for Android!")
   endif()
 
   ament_export_jni_libraries(${_target_name})
